@@ -20,21 +20,21 @@ class WelcomeController extends Controller {
                                   ->call('wsLoginCorporativo', ['login' => $request->login, 'senha' => $request->senha ])
                                   ->response->saida);
 
-                                  dd($acesso);
-                                  
         // Verifica se login foi realizado com sucesso no Corporativo
         if (isset($acesso->{'ds-saida'}->{'t-usuario'}))
         {
             // Pesquisa de usuário já está inserido na Base de Dados 
             $usuario = User::where('matricula', $acesso->{'ds-saida'}->{'t-usuario'}[0]->matricula)->get();
 
+            dd(3434);
+            
             // Insere usuário na Base de Dados 
             if (count($usuario) == 0)
             {
                 $dados['name'] = $acesso->{'ds-saida'}->{'t-usuario'}[0]->nome;
                 $dados['matricula'] = $acesso->{'ds-saida'}->{'t-usuario'}[0]->matricula;
                 $dados['email'] = $acesso->{'ds-saida'}->{'t-usuario'}[0]->email ?? "";
-                $dados['setor'] = $acesso->{'ds-saida'}->{'t-usuario'}[0]->setor ?? "Vendas";
+                $dados['setor'] = $acesso->{'ds-saida'}->{'t-usuario'}[0]->setor ?? "";
                 $usuario = User::create($dados);
                 Auth::loginUsingId($usuario['id']);
             }else
