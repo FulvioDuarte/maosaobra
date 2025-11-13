@@ -23,9 +23,6 @@ class WelcomeController extends Controller {
         // Verifica se login foi realizado com sucesso no Corporativo
         if (isset($acesso->{'ds-saida'}->{'t-usuario'}))
         {
-            $teste = User::all();
-
-            dd($teste);
             // Pesquisa de usuário já está inserido na Base de Dados 
             $usuario = User::where('matricula', $acesso->{'ds-saida'}->{'t-usuario'}[0]->matricula)->get();
 
