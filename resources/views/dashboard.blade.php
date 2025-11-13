@@ -1,230 +1,159 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Almox - Tambasa</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard</title>
 
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-extended.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/components.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fontes.css') }}">
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
+  <!-- Ícones Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-        .layout-wrapper {
-            display: flex;
-            min-height: 100vh;
-            transition: all 0.3s ease;
-        }
+  <style>
+    body {
+      background-color: #f8f9fc;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-        #sidebar {
-            width: 250px;
-            background-color: #343a40;
-            color: white;
-            transition: all 0.3s ease;
-        }
+    /* Sidebar */
+    .sidebar {
+      height: 100vh;
+      background-color: #1e1e2d;
+      color: #fff;
+      position: fixed;
+      width: 230px;
+      padding-top: 20px;
+    }
 
-        #sidebar.hidden {
-            margin-left: -250px;
-        }
+    .sidebar a {
+      color: #cfcfe0;
+      text-decoration: none;
+      display: block;
+      padding: 10px 20px;
+      transition: all 0.3s;
+    }
 
-        #main-content {
-            flex-grow: 1;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #2f2f45;
+      color: #fff;
+    }
 
-        .table-responsive {
-            margin-top: 2px;
-            overflow-x: auto;
-        }
+    .main-content {
+      margin-left: 230px;
+      padding: 30px;
+    }
 
-        .card {
-            border-radius: 12px;
-        }
+    .card {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-        /* Cores pastel para os cards */
-        .card-pastel-blue {
-            background-color: #dbeafe; /* azul claro */
-        }
+    .card-icon {
+      font-size: 2rem;
+      color: #fff;
+      border-radius: 0.75rem;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
 
-        .card-pastel-green {
-            background-color: #dcfce7; /* verde claro */
-        }
+    .btn-manage {
+      background-color: #e7f1ff;
+      color: #0d6efd;
+      border: none;
+    }
 
-        .card-pastel-yellow {
-            background-color: #fef9c3; /* amarelo claro */
-        }
-
-        .card-pastel-red {
-            background-color: #fee2e2; /* vermelho claro */
-        }
-
-        @media (max-width: 767px) {
-            #sidebar {
-                display: none !important;
-            }
-
-            .row.g-3.mb-4 {
-                flex-wrap: wrap;
-            }
-        }
-    </style>
+    .btn-manage:hover {
+      background-color: #d0e4ff;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="layout-wrapper">
-        <!-- Sidebar -->
-        @include('components.menu')
 
-        <!-- Conteúdo Principal -->
-        <div id="main-content">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h5 class="text-center mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h5>
+    <a href="#" class="active"><i class="bi bi-house-door me-2"></i> Dashboard</a>
+    <a href="#"><i class="bi bi-box me-2"></i> Base</a>
+    <a href="#"><i class="bi bi-layout-sidebar me-2"></i> Sidebar Layouts</a>
+    <a href="#"><i class="bi bi-ui-checks me-2"></i> Forms</a>
+  </div>
 
-            <!-- Header -->
-            <nav class="navbar navbar-light bg-light mb-4 rounded shadow-sm p-3">
-                <span class="navbar-brand mb-0 h4">📊 Painel de Controle</span>
-                <div>
-                    <span class="me-3">Bem-vindo, <strong>{{ Auth::user()->name }}</strong></span>
-                </div>
-            </nav>
+  <!-- Conteúdo principal -->
+  <div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3>Dashboard</h3>
+        <p class="text-muted">Free Bootstrap 5 Admin Dashboard</p>
+      </div>
+      <div>
+        <button class="btn btn-manage me-2">Manage</button>
+        <button class="btn btn-primary">Add Customer</button>
+      </div>
+    </div>
 
-            <!-- Cards principais -->
-            <div class="row g-3 mb-4">
-                <div class="col-md-3 col-6">
-                    <form action="dashboard" method="POST">
-                        @csrf
-                        <input type="hidden" name="tipo" value="semsolicitacao">
-                        <button type="submit" style="all: unset; cursor: pointer; display: block; width: 100%;">
-                            <div class="card shadow-sm p-2 card-pastel-blue">
-                                <h6 style="color: black;">Novas Cotações</h6>
-                                <h3 class="fw-bold text-primary">{{ $pedidos['semsolicitacao'] }}</h3>
-                            </div>
-                        </button>
-                    </form>
-                </div>
+    <div class="row g-4">
+      <!-- Visitors -->
+      <div class="col-md-3">
+        <div class="card p-3 d-flex flex-row align-items-center">
+          <div class="card-icon bg-primary">
+            <i class="bi bi-people"></i>
+          </div>
+          <div>
+            <p class="mb-0 text-muted">Visitors</p>
+            <h5 class="mb-0 fw-bold">1,294</h5>
+          </div>
+        </div>
+      </div>
 
-                <div class="col-md-3 col-6">
-                    <form action="dashboard" method="POST">
-                        @csrf
-                        <input type="hidden" name="tipo" value="naoenviado">
-                        <button type="submit" style="all: unset; cursor: pointer; display: block; width: 100%;">
-                            <div class="card shadow-sm p-2 card-pastel-green">
-                                <h6 style="color: black;">Cotações não enviadas</h6>
-                                <h3 class="fw-bold text-success">{{ $pedidos['semenvio'] }}</h3>
-                            </div>
-                        </button>
-                    </form>
-                </div>
+      <!-- Subscribers -->
+      <div class="col-md-3">
+        <div class="card p-3 d-flex flex-row align-items-center">
+          <div class="card-icon bg-info">
+            <i class="bi bi-person-check"></i>
+          </div>
+          <div>
+            <p class="mb-0 text-muted">Subscribers</p>
+            <h5 class="mb-0 fw-bold">1,303</h5>
+          </div>
+        </div>
+      </div>
 
-                <div class="col-md-3 col-6">
-                    <form action="dashboard" method="POST">
-                        @csrf
-                        <input type="hidden" name="tipo" value="semaprovacao">
-                        <button type="submit" style="all: unset; cursor: pointer; display: block; width: 100%;">
-                            <div class="card shadow-sm p-2 card-pastel-yellow">
-                                <h6 style="color: black;">Cotações sem Aprovação</h6>
-                                <h3 class="fw-bold text-warning">{{ $pedidos['semaprovacao'] }}</h3>
-                            </div>
-                        </button>
-                    </form>
-                </div>
+      <!-- Sales -->
+      <div class="col-md-3">
+        <div class="card p-3 d-flex flex-row align-items-center">
+          <div class="card-icon bg-success">
+            <i class="bi bi-bag-check"></i>
+          </div>
+          <div>
+            <p class="mb-0 text-muted">Sales</p>
+            <h5 class="mb-0 fw-bold">$1,345</h5>
+          </div>
+        </div>
+      </div>
 
-                <div class="col-md-3 col-6">
-                    <form action="dashboard" method="POST">
-                        @csrf
-                        <input type="hidden" name="tipo" value="atrasado">
-                        <button type="submit" style="all: unset; cursor: pointer; display: block; width: 100%;">
-                            <div class="card shadow-sm p-2 card-pastel-red">
-                                <h6 style="color: black;">Cotações Atrasadas</h6>
-                                <h3 class="fw-bold text-danger">{{ $pedidos['atrasados'] }}</h3>
-                            </div>
-                        </button>
-                    </form>
-                </div>
-            </div>
+      <!-- Orders -->
+      <div class="col-md-3">
+        <div class="card p-3 d-flex flex-row align-items-center">
+          <div class="card-icon bg-purple" style="background-color: #6f42c1;">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <div>
+            <p class="mb-0 text-muted">Order</p>
+            <h5 class="mb-0 fw-bold">576</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            <!-- Formulário de filtros -->
-            <form action="dashboard" method="POST">
-            @csrf
-                <div class="input-group mb-3">
-                    <input type="number" class="form-control mx-1" name="numeropedido" value="" placeholder="Pesquisar número do pedido" style="color: black;">
-                    <button type="submit" class="btn btn-info mx-1">🔍</button>
-                </div>
-            </form>
-
-            <!-- Tabela de exemplo -->
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <strong>📦 Pedidos 
-                        @if (request()->tipo == 'semsolicitacao')
-                            - Novas Cotações
-                        @elseif (request()->tipo == 'naoenviado')
-                            - Cotações não enviadas
-                        @elseif (request()->tipo == 'semaprovacao')
-                            - Cotações sem Aprovação
-                        @elseif (request()->tipo == 'atrasado')
-                            - Cotações Atrasadas
-                        @endif
-                    </strong>
-                </div>
-                <div class="card-body table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Data Solicitação</th>
-                                <th>Solicitante</th>
-                                <th>Setor</th>
-                                <th>Ordem Serviço</th>
-                                <th>Data Retorno</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($dados as $dado)
-                                <tr>
-                                    <td><a href="{{ route('timeline', [ 'pedido_id'=>$dado->id]) }}" title="Visualizar timeline" style="cursor: pointer; text-decoration: underline; font-weight: bold">{{ $dado->numero_pedido }}</a></td>
-                                    <td>{{ $dado->data_solicitacao ? $dado->data_solicitacao->format('d-m-Y') : '' }}</td>
-                                    <td>{{ $dado->solicitante }}</td>
-                                    <td>{{ $dado->setor }}</td>
-                                    <td>{{ $dado->ordem_servico }}</td>
-                                    <td>
-                                        @if ($dado->finalizado == 1)
-                                            Finalizado
-                                        @elseif (!is_null($dado->data_aprovacao))
-                                            Aprovado
-                                        @elseif (!is_null($dado->dias_retorno) && !is_null($dado->data_envio_cotacao))
-                                            @if (($dado->data_envio_cotacao->addDays($dado->dias_retorno)) < now())
-                                                <span style="color: red;">
-                                                    {{ $dado->data_envio_cotacao->addDays($dado->dias_retorno)->format('d-m-Y') }}
-                                                </span> 
-                                            @else
-                                                {{ $dado->data_envio_cotacao->addDays($dado->dias_retorno)->format('d-m-Y') }}
-                                            @endif
-                                        @else
-                                            --
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center">Nenhum dado encontrado</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div> <!-- fim main-content -->
-    </div> <!-- fim layout-wrapper -->
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -16,7 +16,6 @@ class WelcomeController extends Controller {
     
     public function store(Request $request)
     {
-
         $acesso = json_decode(Soap::to('http://192.168.3.100:8080/soap/wsdl?targetURI=webservices')
                                   ->call('wsLoginCorporativo', ['login' => $request->login, 'senha' => $request->senha ])
                                   ->response->saida);
@@ -39,14 +38,7 @@ class WelcomeController extends Controller {
             }else
                 Auth::loginUsingId($usuario[0]['id']); 
             
-            if (Auth::user()->acesso_almox == 1 && Auth::user()->acesso_compras == 1)
-                return view('menuprincipal'); 
-            elseif (Auth::user()->acesso_almox == 1)
-                return view('menu'); 
-            elseif (Auth::user()->acesso_compras == 1)
-                return view('cotacaoalmox'); 
-            else
-                return redirect ('/')->with('mensagem', 'ATENÇÃO: Nenhum módulo foi habilitado para o seu perfil.');
+             return view('dashboard'); 
 
         }else
             return redirect ('/')->with('mensagem', 'Usuário ou senha incorreta');

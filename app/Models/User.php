@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -23,8 +22,6 @@ class User extends Authenticatable
         'email',
         'matricula',
         'setor',
-        'acesso',
-        'codgernac',
     ];
 
     /**
@@ -46,14 +43,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function UserAssociados()
-    {
-        $usuarios = Pedido::whereNotNull('user_associado')
-                    ->select('user_associado', DB::raw('count(*) as total'), 'users.name')
-                    ->join('users', 'users.id', 'pedidos.user_associado')
-                    ->where('pedidos.finalizado', '<>', 2)
-                    ->groupBy('user_associado', 'users.name')->get();
-
-        return $usuarios;
-    }
 }

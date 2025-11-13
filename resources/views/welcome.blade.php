@@ -39,7 +39,7 @@
 <body>
     <div class="login-container">
         <div class="text-center">
-            <h1 class="h5 text-gray-900 mb-4"><strong>Almoxarifado Tambasa</strong></h1>
+            <h1 class="h5 text-gray-900 mb-4"><strong>Frota Tambasa</strong></h1>
         </div>
         <form method="POST" class="user">
             @csrf
