@@ -23,11 +23,11 @@ class WelcomeController extends Controller {
         // Verifica se login foi realizado com sucesso no Corporativo
         if (isset($acesso->{'ds-saida'}->{'t-usuario'}))
         {
+            dd(3434);
             // Pesquisa de usuário já está inserido na Base de Dados 
             $usuario = User::where('matricula', $acesso->{'ds-saida'}->{'t-usuario'}[0]->matricula)->get();
 
-            dd(3434);
-            
+
             // Insere usuário na Base de Dados 
             if (count($usuario) == 0)
             {
