@@ -20,6 +20,8 @@ class WelcomeController extends Controller {
                                   ->call('wsLoginCorporativo', ['login' => $request->login, 'senha' => $request->senha ])
                                   ->response->saida);
 
+                                  dd($acesso);
+                                  
         // Verifica se login foi realizado com sucesso no Corporativo
         if (isset($acesso->{'ds-saida'}->{'t-usuario'}))
         {
