@@ -5,10 +5,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Tambasa - Login</title>
+    <title>Frota</title>
 
     <!-- Fonts e CSS -->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+    <!-- Ícones Bootstrap -->
+    <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
     <style>
         body {
@@ -39,6 +42,7 @@
 <body>
     <div class="login-container">
         <div class="text-center">
+            <i class="bi bi-car-front"></i>
             <h1 class="h5 text-gray-900 mb-4"><strong>Frota Tambasa</strong></h1>
         </div>
         <form method="POST" class="user">

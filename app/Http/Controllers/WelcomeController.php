@@ -16,6 +16,7 @@ class WelcomeController extends Controller {
     
     public function store(Request $request)
     {
+        dd(1);
         $acesso = json_decode(Soap::to('http://192.168.3.100:8080/soap/wsdl?targetURI=webservices')
                                   ->call('wsLoginCorporativo', ['login' => $request->login, 'senha' => $request->senha ])
                                   ->response->saida);
