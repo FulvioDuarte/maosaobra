@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard</title>
+  <title>Frota</title>
 
   <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+  
   <!-- Ícones Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
   <style>
     body {
@@ -77,21 +77,14 @@
 
 <body>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h5 class="text-center mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h5>
-    <a href="#" class="active"><i class="bi bi-house-door me-2"></i> Dashboard</a>
-    <a href="#"><i class="bi bi-box me-2"></i> Base</a>
-    <a href="#"><i class="bi bi-layout-sidebar me-2"></i> Sidebar Layouts</a>
-    <a href="#"><i class="bi bi-ui-checks me-2"></i> Forms</a>
-  </div>
+  @include('components.menu')
 
   <!-- Conteúdo principal -->
   <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h3>Dashboard</h3>
-        <p class="text-muted">Free Bootstrap 5 Admin Dashboard</p>
+        <p class="text-muted">Seja bem vindo, {{ Auth::user()->name }}</p>
       </div>
       <div>
         <button class="btn btn-manage me-2">Manage</button>
@@ -104,10 +97,10 @@
       <div class="col-md-3">
         <div class="card p-3 d-flex flex-row align-items-center">
           <div class="card-icon bg-primary">
-            <i class="bi bi-people"></i>
+            <i class="bi bi-car-front"></i>
           </div>
           <div>
-            <p class="mb-0 text-muted">Visitors</p>
+            <p class="mb-0 text-muted">Veículos</p>
             <h5 class="mb-0 fw-bold">1,294</h5>
           </div>
         </div>
@@ -154,6 +147,6 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ asset('vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
