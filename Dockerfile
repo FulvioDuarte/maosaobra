@@ -32,5 +32,11 @@ RUN chown -R www-data:www-data /var/www \
 # Dependências PHP
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-EXPOSE 9000
-CMD ["php-fpm"]
+# Variável de porta do Railway
+ENV PORT 8080
+
+# Expõe a porta
+EXPOSE $PORT
+
+# Servidor embutido do Laravel
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
