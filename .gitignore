@@ -18,6 +18,5 @@ yarn-error.log
 /.vscode
 config/database.php
 **/app/node_modules
-Dockerfile
 docker-compose.yml
 
