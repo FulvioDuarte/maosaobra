@@ -38,4 +38,4 @@ RUN chmod +x /entrypoint.sh
 EXPOSE 8080
 
 # Comando principal
-CMD ["/entrypoint.sh"]
+CMD /entrypoint.sh && /var/www/healthcheck.sh
