@@ -1,27 +1,41 @@
-# Usa PHP CLI (mais leve)
-FROM php:8.2-cli
+# Base PHP 8.2 FPM
+FROM php:8.2-fpm
 
+# Instala dependências do sistema + gettext-base (para envsubst)
+RUN apt-get update && apt-get install -y \
+    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev zip unzip git curl nodejs npm \
+    nginx supervisor gettext-base \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd zip pdo pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*
+
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Diretório de trabalho
 WORKDIR /var/www
 
-# Copia só o composer antes
+# Copia apenas composer.json e composer.lock primeiro (para cache)
 COPY composer.json composer.lock ./
 
-# Instala dependências
-RUN apt-get update && apt-get install -y unzip git curl zip \
-    && docker-php-ext-install pdo pdo_mysql \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
-    && composer install --no-dev --optimize-autoloader
+# Instala dependências PHP
+RUN composer install --no-dev --optimize-autoloader
 
-# Copia o restante
+# Copia todo o restante do projeto
 COPY . .
 
-# Permissões
+# Permissões Laravel
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 775 storage bootstrap/cache
 
-# Expõe porta que o Railway usará
-EXPOSE 8080
-ENV PORT 8080
+# Copia configs do Nginx e Supervisor
+COPY docker/default.conf /etc/nginx/sites-available/default.template
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Serve Laravel na porta do Railway
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+# Expõe porta do Railway
+EXPOSE 8080
+
+# Comando principal
+CMD ["/entrypoint.sh"]
