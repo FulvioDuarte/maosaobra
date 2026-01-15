@@ -1,36 +1,26 @@
-# Base PHP 8.2 FPM
-FROM php:8.2-fpm
+# Base PHP CLI
+FROM php:8.2-cli
 
-# Instala dependências do sistema
-RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev zip unzip git curl nodejs npm \
-    nginx supervisor \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip pdo pdo_mysql \
-    && rm -rf /var/lib/apt/lists/*
-
-# Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Diretório de trabalho
 WORKDIR /var/www
 
-# Copia todo o projeto
+# Copia o projeto
 COPY . .
+ 
+# Instala dependências do sistema e PHP
+RUN apt-get update && apt-get install -y unzip git curl zip nodejs npm \
+    && docker-php-ext-install pdo pdo_mysql \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
+    && composer install --no-dev --optimize-autoloader
 
 # Permissões Laravel
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 775 storage bootstrap/cache
 
-# Instala dependências PHP
-RUN composer install --no-dev --optimize-autoloader
-
-# Copia configurações do Nginx e Supervisor
-COPY docker/default.conf /etc/nginx/sites-available/default
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-# Expõe a porta que o Railway vai usar
+# Expõe a porta usada pelo Railway
 EXPOSE 8080
 
-# Comando principal: inicia Supervisor que roda PHP-FPM + Nginx
-CMD ["/usr/bin/supervisord", "-n"]
+# Porta fornecida pelo Railway
+ENV PORT 8080
+
+# Comando principal: PHP Built-in server do Laravel
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
