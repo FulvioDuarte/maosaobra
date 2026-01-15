@@ -25,6 +25,12 @@ RUN chown -R www-data:www-data /var/www \
 # Instala dependências PHP
 RUN composer install --no-dev --optimize-autoloader
 
+RUN apt-get update && apt-get install -y \
+    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev zip unzip git curl nodejs npm gettext-base supervisor nginx \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd zip pdo pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copia configurações do Nginx e Supervisor
 COPY docker/default.conf /etc/nginx/sites-available/default.template
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
