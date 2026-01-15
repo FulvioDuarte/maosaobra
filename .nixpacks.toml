@@ -11,3 +11,4 @@ nixPkgs = [
   "php82Extensions.fileinfo",
   "php82Extensions.gd"
 ]
+ 
