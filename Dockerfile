@@ -36,6 +36,10 @@ RUN chmod +x /entrypoint.sh
 
 # Expõe porta do Railway
 EXPOSE 8080
+ 
+# Copia healthcheck
+COPY healthcheck.sh /var/www/healthcheck.sh
+RUN chmod +x /var/www/healthcheck.sh
 
 # Comando principal
 CMD /entrypoint.sh && /var/www/healthcheck.sh
