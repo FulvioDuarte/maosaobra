@@ -1,152 +1,178 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Frota</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gestão de Obras • Financeiro</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+body { background:#f4f6f8; font-family: 'Segoe UI', sans-serif; }
 
-  <!-- Bootstrap 5 -->
-  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-  
-  <!-- Ícones Bootstrap -->
-  <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+/* SIDEBAR DESKTOP */
+.sidebar {
+    background:#1f2933;
+    width:240px;
+    min-height:100vh;
+    color:#fff;
+    position: fixed;
+    top:0;
+    left:0;
+    padding-top:20px;
+}
+.sidebar h4 { padding:0 20px 20px; border-bottom:1px solid #2f3b47; }
+.sidebar a {
+    color:#cfd8dc; display:block; padding:12px 20px; text-decoration:none;
+}
+.sidebar a:hover { background:#2f3b47; color:#fff; }
 
-  <style>
-    body {
-      background-color: #f8f9fc;
-      font-family: 'Segoe UI', sans-serif;
+/* CONTEUDO */
+main {
+    margin-left:240px;
+}
+
+/* TIMELINE */
+.timeline { position: relative; margin-left: 20px; }
+.timeline::before { content:''; position:absolute; left:18px; top:0; bottom:0; width:4px; background:#dee2e6; }
+.timeline-item { position:relative; margin-bottom:30px; padding-left:60px; }
+.timeline-item::before { content:''; position:absolute; left:8px; top:15px; width:24px; height:24px; background:#0d6efd; border-radius:50%; }
+.card-financeiro { border-left:5px solid #0d6efd; }
+.valor-principal { font-size:1.5rem; font-weight:600; }
+.pago { color:#198754; font-weight:600; }
+.nao-pago { color:#dc3545; font-weight:600; }
+
+/* MOBILE */
+#menuToggle{
+    position: fixed;
+    top:8px;
+    left:8px;
+    z-index:1100;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#1f2933;
+    color:#fff;
+    border:none;
+    box-shadow:0 4px 10px rgba(0,0,0,0.25);
+}
+#menuToggle.hide{ display:none; }
+#menuToggle:hover{ background:#2f3b47; }
+#menuToggle:hover{ background:#2f3b47; }
+
+@media(max-width:768px){
+    .sidebar{
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index:1050;
     }
-
-    /* Sidebar */
-    .sidebar {
-      height: 100vh;
-      background-color: #1e1e2d;
-      color: #fff;
-      position: fixed;
-      width: 230px;
-      padding-top: 20px;
-    }
-
-    .sidebar a {
-      color: #cfcfe0;
-      text-decoration: none;
-      display: block;
-      padding: 10px 20px;
-      transition: all 0.3s;
-    }
-
-    .sidebar a:hover, .sidebar a.active {
-      background-color: #2f2f45;
-      color: #fff;
-    }
-
-    .main-content {
-      margin-left: 230px;
-      padding: 30px;
-    }
-
-    .card {
-      border: none;
-      border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .card-icon {
-      font-size: 2rem;
-      color: #fff;
-      border-radius: 0.75rem;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 15px;
-    }
-
-    .btn-manage {
-      background-color: #e7f1ff;
-      color: #0d6efd;
-      border: none;
-    }
-
-    .btn-manage:hover {
-      background-color: #d0e4ff;
-    }
-  </style>
+    .sidebar.active{ transform: translateX(0); }
+    main{ margin-left:0; padding-top:60px !important; }
+}
+</style>
 </head>
-
 <body>
+<div class="container-fluid">
+<div class="row">
+    <!-- MENU LATERAL -->
+    <nav class="sidebar" id="sidebar">
+    <h4>Obra Alpha</h4>
+    <a href="#"><i class="bi bi-cash-stack"></i> Financeiro</a>
+    <a href="#"><i class="bi bi-people"></i> Participantes</a>
+    <a href="#"><i class="bi bi-file-earmark-text"></i> Relatórios</a>
+    <a href="#"><i class="bi bi-gear"></i> Configurações</a>
+</nav>
 
-  @include('components.menu')
+    <!-- CONTEÚDO -->
+    <button class="btn btn-outline-secondary d-md-none position-fixed" id="menuToggle" style="top:12px; left:12px; z-index:1100;"><i class="bi bi-list"></i></button>
+    <main style="padding-top:80px;" style="padding-top:20px;" class="col-md-9 col-lg-10 p-4">
+        <h2 class="mb-4">Demonstrativo Financeiro</h2>
 
-  <!-- Conteúdo principal -->
-  <div class="main-content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h3>Dashboard</h3>
-        <p class="text-muted">Seja bem vindo, {{ Auth::user()->name }}</p>
-      </div>
-      <div>
-        <button class="btn btn-manage me-2">Manage</button>
-        <button class="btn btn-primary">Add Customer</button>
-      </div>
-    </div>
+        <div class="timeline">
+            <!-- MÊS -->
+            <div class="timeline-item">
+                <div class="card card-financeiro shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Janeiro / 2026</h5>
+                            <span class="pago"><i class="bi bi-check-circle"></i> Pago</span>
+                        </div>
+                        <hr>
+                        <div class="valor-principal mb-3">Boleto: R$ 8.000,00</div>
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Pessoa</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Pessoa 01</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                    <tr><td>Pessoa 02</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                    <tr><td>Pessoa 03</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                    <tr><td>Pessoa 04</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                    <tr><td>Pessoa 05</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                    <tr><td>Pessoa 06</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                    <tr><td>Pessoa 07</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                    <tr><td>Pessoa 08</td><td>R$ 1.000,00</td><td class="pago">Pago</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="row g-4">
-      <!-- Visitors -->
-      <div class="col-md-3">
-        <div class="card p-3 d-flex flex-row align-items-center">
-          <div class="card-icon bg-primary">
-            <i class="bi bi-car-front"></i>
-          </div>
-          <div>
-            <p class="mb-0 text-muted">Veículos</p>
-            <h5 class="mb-0 fw-bold">1,294</h5>
-          </div>
+            <!-- OUTRO MÊS -->
+            <div class="timeline-item">
+                <div class="card card-financeiro shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Fevereiro / 2026</h5>
+                            <span class="nao-pago"><i class="bi bi-exclamation-circle"></i> Em aberto</span>
+                        </div>
+                        <hr>
+                        <div class="valor-principal mb-3">Boleto: R$ 7.600,00</div>
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Pessoa</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Pessoa 01</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                    <tr><td>Pessoa 02</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                    <tr><td>Pessoa 03</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                    <tr><td>Pessoa 04</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                    <tr><td>Pessoa 05</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                    <tr><td>Pessoa 06</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                    <tr><td>Pessoa 07</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                    <tr><td>Pessoa 08</td><td>R$ 950,00</td><td class="nao-pago">Pendente</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </main>
+</div>
+</div>
+<script>
+const toggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('menuToggle');
 
-      <!-- Subscribers -->
-      <div class="col-md-3">
-        <div class="card p-3 d-flex flex-row align-items-center">
-          <div class="card-icon bg-info">
-            <i class="bi bi-person-check"></i>
-          </div>
-          <div>
-            <p class="mb-0 text-muted">Subscribers</p>
-            <h5 class="mb-0 fw-bold">1,303</h5>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sales -->
-      <div class="col-md-3">
-        <div class="card p-3 d-flex flex-row align-items-center">
-          <div class="card-icon bg-success">
-            <i class="bi bi-bag-check"></i>
-          </div>
-          <div>
-            <p class="mb-0 text-muted">Sales</p>
-            <h5 class="mb-0 fw-bold">$1,345</h5>
-          </div>
-        </div>
-      </div>
-
-      <!-- Orders -->
-      <div class="col-md-3">
-        <div class="card p-3 d-flex flex-row align-items-center">
-          <div class="card-icon bg-purple" style="background-color: #6f42c1;">
-            <i class="bi bi-check-circle"></i>
-          </div>
-          <div>
-            <p class="mb-0 text-muted">Order</p>
-            <h5 class="mb-0 fw-bold">576</h5>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="{{ asset('vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+toggle?.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    toggleBtn.classList.toggle('hide');
+});
+</script>
 </body>
 </html>
